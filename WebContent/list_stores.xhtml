@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en"
+	xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://xmlns.jcp.org/jsf/html"
+	xmlns:f="http://xmlns.jcp.org/jsf/core">
+	
+<h:head>
+	<title>List Stores</title>
+</h:head>
+
+<f:metadata>
+  <f:event type="preRenderView" 
+      listener="#{storeController.loadStores()}"/>
+</f:metadata>
+
+<h:body>
+	<h:form>
+		<h:commandButton value="Add Store" action="addStore"/><br/>
+		
+		<h1>Store ID | Store Name | Founded | Action</h1>
+		<p>#{storeController.stores[0].id}  #{storeController.stores[0].name}  #{storeController.stores[0].founded}</p>
+		<p>#{storeController.stores[1].id}  #{storeController.stores[1].name}  #{storeController.stores[1].founded}</p>
+		<p>#{storeController.stores[2].id}  #{storeController.stores[2].name}  #{storeController.stores[2].founded}</p>
+		
+		
+		<h:commandLink value="Home" action="index"/>
+	</h:form>
+</h:body>
+</html>

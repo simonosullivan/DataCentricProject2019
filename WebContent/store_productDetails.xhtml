@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="en"
+	xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://xmlns.jcp.org/jsf/html"
+	xmlns:f="http://xmlns.jcp.org/jsf/core">
+	
+<h:head>
+	<title>Store/Product Details</title>
+</h:head>
+
+<f:metadata>
+  <f:event type="preRenderView" 
+      listener="#{storeController.loadProducts()}"/>
+</f:metadata>
+
+<h:body>
+	<p>#{storeController.products[0].pid}  #{storeController.products[0].sid}  #{storeController.products[0].prodName} #{storeController.products[0].price}</p>
+		
+	<h:form>
+		<h:commandLink value="Home Stores" action="list_stores"/>
+	</h:form>
+</h:body>
+</html>
