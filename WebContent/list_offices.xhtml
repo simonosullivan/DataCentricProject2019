@@ -6,12 +6,12 @@
 	xmlns:ui="http://java.sun.com/jsf/facelets">
 	
 <h:head>
-	<title>List Stores</title>
+	<title>Manage Head Offices</title>
 </h:head>
 
 <f:metadata>
   <f:event type="preRenderView" 
-      listener="#{storeController.loadStores()}"/>
+      listener="#{storeController.loadHeadOffices()}"/>
 </f:metadata>
 
 <h:body>
@@ -22,41 +22,27 @@
 
 	<h:form>
 	
-		<h:commandButton value="Add Store" styleClass="addbutton" action="addStore"/><br/>
+		<h:commandButton value="Add Head Office" styleClass="addbutton" action="*"/><br/>
 		
-		<h:dataTable value="#{storeController.stores}" var="store"
+		<h:dataTable value="#{storeController.storeHOs}" var="store"
 		headerClass="table-header"
 		rowClasses="table-odd-row,table-even-row">
 			
 			<h:column>
 		 	  <f:facet name="header">Store ID</f:facet>
-				#{store.id}
+				#{store._id}
 			</h:column>
 			
 			<h:column>
 		 	  <f:facet name="header">Store Name</f:facet>
-				#{store.name}
+				#{store.location}
 			</h:column>
-			
-			<h:column>
-		 	  <f:facet name="header">Founded</f:facet>
-				#{store.founded}
-			</h:column>
-			
-			<h:column>
-		 	  <f:facet name="header">Action</f:facet>
-				<h:commandLink value="Show Products " action="store_productDetails">
-					<f:actionListener binding="#{storeController.storesProducts(store)}" />
-				</h:commandLink>
-				<h:commandLink value=" Delete" action="#{storeController.deleteStore(store)}"/>
-			</h:column>
-			
 		
 		</h:dataTable>
 		
 		<br/>
 		
 		<h:commandLink value="Home" action="index"/>
-	</h:form>
+	</h:form> 
 </h:body>
 </html>

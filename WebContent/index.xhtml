@@ -8,12 +8,16 @@
 	<title>Stores</title>
 </h:head>
 <h:body>
+	<h:outputStylesheet library="css" name="styles.css"/>
+	<h:messages globalOnly="true" styleClass="error"/>
+	
 	<h:form>
-	<h:commandLink value="Manage Stores" action="list_stores"/>
-	<br/>
-	<h:link value="Manage Products" outcome="list_products"/>
-	<br/>
-	<h:link value="Manage Head offices" outcome="list_offices"/>
+		<h:commandLink value="Manage Stores" action="list_stores"/>
+		<br/>
+		<h:link value="Manage Products" outcome="list_products"/>
+		<br/>
+		<h:link value="Manage Head offices" outcome="list_offices"/>
 	</h:form>
+	
 </h:body>
 </html>

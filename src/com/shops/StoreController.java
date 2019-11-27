@@ -17,8 +17,11 @@ import com.mysql.jdbc.CommunicationsException;
 public class StoreController {
 
 	DAO dao;
+	MongoDAO mongoDAO;
 	ArrayList<Store> stores;
 	ArrayList<Product> products;
+	ArrayList<StoresProducts> storesProds;
+	ArrayList<StoreHeadOffice> storeHOs;
 	
 	public StoreController() {
 		super();
@@ -27,6 +30,12 @@ public class StoreController {
 			this.dao = new DAO();
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+		try {
+			this.mongoDAO = new MongoDAO();
+		} catch (Exception e) {
 			e.printStackTrace();
 		}
 		
@@ -41,7 +50,16 @@ public class StoreController {
 	public ArrayList<Product> getProducts() {
 		return products;
 	}
-	
+
+	public ArrayList<StoresProducts> getStoresProds() {
+		return storesProds;
+	}
+
+	public ArrayList<StoreHeadOffice> getStoreHOs() {
+		return storeHOs;
+	}
+
+
 
 	public void loadStores() {
 		System.out.println("in loadStores()");
@@ -61,6 +79,17 @@ public class StoreController {
 			e.printStackTrace();
 		}
 	}//loadProducts
+	
+	public void deleteProduct(Product p) {
+		System.out.println(p.getProdName());
+		
+		try {
+			dao.deleteProduct(p);
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
 
 
 	public String addStore(Store s) {
@@ -95,7 +124,59 @@ public class StoreController {
 		
 		return null;
 	}
+	
+	public String deleteStore(Store s) {
+		System.out.println(s.getName());
+		boolean delete = true;
+		// check to see if store has products ; if sid == true , store still has products
+		if(products == null) {
+			try {
+				products = this.dao.loadProducts();
+			} catch (Exception e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}
+		for(int i=0; i< products.size(); i++) {  										
+			if(s.getId() == products.get(i).sid) {
+				// product for store exists; therefore can't be deleted 
+				delete = false;
+				break;
+			}
+		}
+		
+		
+		if(delete == true) {
+			try {
+				dao.deleteStore(s);
+			} catch (Exception e) {
+				FacesMessage message = 
+						new FacesMessage("Error: "+e.getMessage());
+						FacesContext.getCurrentInstance().addMessage(null, message);
+			}
+		}else {
+			FacesMessage message = 
+					new FacesMessage("Error: Store "+s.getName()+" has not been deleted from MySQL DB, it contains products");
+					FacesContext.getCurrentInstance().addMessage(null, message);
+		}
+		return null;
+		
+		
+	}
 
+	public void storesProducts(Store s) {
+		try {
+			storesProds = dao.storesProducts(s);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
+	
+	
+	public void loadHeadOffices() {
+		System.out.println("in controller in LoadHeadOffices");
+		storeHOs = this.mongoDAO.loadHeadOffices();
+	}
 	
 	
 }

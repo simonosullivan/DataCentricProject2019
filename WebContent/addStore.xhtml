@@ -10,10 +10,11 @@
 </h:head>
 
 <h:body>
-<h:messages globalOnly="true"/>
+	<h:outputStylesheet library="css" name="styles.css"/>
+	<h:messages globalOnly="true" styleClass="error"/>
 	<h:form>
 	
-		<h1>Add Store</h1>
+		<h2>Add Store</h2>
 			Store Name: <h:inputText id="name" required="true" requiredMessage="Name is mandatory" value="#{store.name}"/> 
 			<br/><br/> 
 			<h:message for="name" style="color:red" />
@@ -23,8 +24,12 @@
 	    	<h:message for="founded" style="color:red" />
 	    	<br/><br/>
 	
-		<h:commandButton value="Add" immediate="true" action="#{storeController.addStore(store)}"/><br/><br/>
+		<h:commandButton value="Add"  action="#{storeController.addStore(store)}"/><br/><br/>
+	</h:form>
+	
+	<h:form>
 		<h:commandLink value="Home Stores" action="list_stores"/>
 	</h:form>
+	
 </h:body>
 </html>

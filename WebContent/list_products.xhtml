@@ -6,58 +6,55 @@
 	xmlns:ui="http://java.sun.com/jsf/facelets">
 	
 <h:head>
-	<title>Store/Product Details</title>
+	<title>Manage Products</title>
 </h:head>
 
+<f:metadata>
+  <f:event type="preRenderView" 
+      listener="#{storeController.loadProducts()}"/>
+</f:metadata>
 
- 
 <h:body>
 	<h:outputStylesheet library="css" name="styles.css"/>
 	<h:messages globalOnly="true" styleClass="error"/>
 	<h:outputStylesheet library="css" name="tables.css"/>
 
-	<h2>Store/Product Details</h2>
+	<h1>Store/Product Details</h1>
 	<br/>
-			
-	<h:dataTable value="#{storeController.storesProds}"  var="sp"
+	<h:form>
+	<h:dataTable value="#{storeController.products}" var="product"
 		headerClass="table-header"
 		rowClasses="table-odd-row,table-even-row">
 			
 			<h:column>
 		 	  <f:facet name="header">Store ID</f:facet>
-				#{sp.id}
+				#{product.sid}
 			</h:column>
 			
-			<h:column>
-		 	  <f:facet name="header">Store Name</f:facet>
-				#{sp.name}
-			</h:column>
-			
-			<h:column>
-		 	  <f:facet name="header">Founded</f:facet>
-				#{sp.founded}
-			</h:column> 
-				
 			<h:column>
 		 	  <f:facet name="header">Product ID</f:facet>
-				#{sp.pid}
+				#{product.pid}
 			</h:column>
 			
 			<h:column>
 		 	  <f:facet name="header">Product Name</f:facet>
-				#{sp.prodName}
+				#{product.prodName}
 			</h:column>
 			
 			<h:column>
 		 	  <f:facet name="header">Price</f:facet>
-				#{sp.price}
+				#{product.price} 
 			</h:column>
-
-				
-	</h:dataTable>
-				
-	<h:form>
-		<h:commandLink value="Home Stores" action="list_stores"/>
+			
+			<h:column>
+		 	  <f:facet name="header">Action</f:facet>
+				<h:commandLink value=" Delete" action="#{storeController.deleteProduct(product)}"/>			
+			</h:column>
+			
+		
+		</h:dataTable>
+	
+		<h:commandLink value="Home" action="index"/>
 	</h:form>
 </h:body>
 </html>
