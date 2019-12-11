@@ -22,10 +22,14 @@
 	<h1>Store/Product Details</h1>
 	<br/>
 	<h:form>
+	
+	<!-- Here is where I added the button to take you to new page -->
+	<h:commandButton value="Add Product" styleClass="addbutton" action="addProduct"/><br/>
+	
 	<h:dataTable value="#{storeController.products}" var="product"
 		headerClass="table-header"
 		rowClasses="table-odd-row,table-even-row">
-			
+						
 			<h:column>
 		 	  <f:facet name="header">Store ID</f:facet>
 				#{product.sid}
@@ -48,7 +52,7 @@
 			
 			<h:column>
 		 	  <f:facet name="header">Action</f:facet>
-				<h:commandLink value=" Delete" action="#{storeController.deleteProduct(product)}"/>			
+				<h:commandLink value=" Delete  " action="#{storeController.deleteProduct(product)}"/>		
 			</h:column>
 			
 		

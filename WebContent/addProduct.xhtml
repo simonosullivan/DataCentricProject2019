@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en"
+	xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://xmlns.jcp.org/jsf/html"
+	xmlns:f="http://xmlns.jcp.org/jsf/core">
+	
+<h:head>
+	<title>Add Product</title>
+</h:head>
+
+<h:body>
+	<h:outputStylesheet library="css" name="styles.css"/>
+	<h:messages globalOnly="true" styleClass="error"/>
+	<h:form>
+	
+		<h2>Add Product</h2>
+			Store ID: <h:inputText id="sid" required="true" requiredMessage="Store ID is mandatory" value="#{product.sid}"/> 
+			<br/><br/> 
+			<h:message for="sid" style="color:red" />
+			<br/><br/>
+			
+	    	Product Name: <h:inputText id="prodName" required="true" requiredMessage="Product Name is mandatory" value="#{product.prodName}"/>
+	    	<br/><br/> 
+	    	<h:message for="prodName" style="color:red" />
+	    	<br/><br/>
+	    	
+	    	Price: <h:inputText id="price" required="true" requiredMessage="Price is mandatory" value="#{product.price}"/>
+	    	<br/><br/> 
+	    	<h:message for="price" style="color:red" />
+	    	<br/><br/>
+	
+		<h:commandButton value="Add"  action="#{storeController.addProduct(product)}"/><br/><br/>
+	</h:form>
+	
+	<h:form>
+		<h:commandLink value="List Products" action="list_products"/>
+	</h:form>
+	
+</h:body>
+</html>

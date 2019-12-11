@@ -150,7 +150,23 @@ public class DAO {
 		return storesProds;
 		
 	}
+
 	
+	// Innovation method     ///////////////////////////////////
+	public void addProduct(Product p) throws Exception {
+		Connection myConn = null;
+		PreparedStatement myStmt = null;
+		
+		myConn = mysqlDS.getConnection();
+		String sql = "insert into product values (?, ?, ?, ?)";
+		myStmt = myConn.prepareStatement(sql);
+		myStmt.setInt(1, p.getPid()); 
+		myStmt.setInt(2, p.getSid());
+		myStmt.setString(3, p.getProdName());
+		myStmt.setDouble(4, p.getPrice());
+		myStmt.execute();
+	}
+	////////////////////////////////////////////////////////////
 	
 
 }

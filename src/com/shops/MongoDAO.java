@@ -3,6 +3,7 @@ package com.shops;
 import java.util.ArrayList;
 
 import org.bson.Document;
+
 import com.mongodb.MongoClient;
 import com.mongodb.client.FindIterable;
 import com.mongodb.client.MongoCollection;
@@ -20,10 +21,18 @@ public class MongoDAO {
 	MongoDatabase database;
 	MongoCollection<Document> collection;
 	
+	ArrayList<StoreHeadOffice> cpHeadOffices = new ArrayList<>();
 	
-	/* ======================================================================================================
-	 * Constructor
-	 * ====================================================================================================== */
+	public void setCpHeadOffices(ArrayList<StoreHeadOffice> cpHeadOffices) {
+		this.cpHeadOffices = cpHeadOffices;
+	}
+
+
+	public ArrayList<StoreHeadOffice> getCpHeadOffices() {
+		return cpHeadOffices;
+	}
+
+
 	public MongoDAO() throws Exception {
 		mongoClient = new MongoClient();
 		database = mongoClient.getDatabase("storeHeadOfficeDB");
@@ -33,19 +42,54 @@ public class MongoDAO {
 
 	public ArrayList<StoreHeadOffice> loadHeadOffices() {
 		System.out.println("in mongoDAO in loadHeadOffices");
-		//BasicDBObject query = new BasicDBObject();
+		cpHeadOffices.clear();
 		
-		ArrayList<StoreHeadOffice> list = new ArrayList<>();
 		Gson gson = new Gson();
 		FindIterable<Document> headOffice = collection.find();
+		ArrayList<StoreHeadOffice> list = new ArrayList<>();
 		
 		for (Document d : headOffice) {
 			   StoreHeadOffice sho = gson.fromJson(d.toJson(), StoreHeadOffice.class);
 			   list.add(sho);
+			   cpHeadOffices.add(sho);
 		}
-		System.out.println("List : "+list);
+		
 		return list;
 	}
+
+
+	public boolean addHeadOffice(StoreHeadOffice s) {
+		boolean exists = false;
+		
+		
+		
+		 // check if _id is being used already 
+		for(int i=0; i<cpHeadOffices.size(); i++) {
+			 if(s.get_id() == cpHeadOffices.get(i).get_id()) { 
+				 exists = true; 
+			 }
+		}
+		 
+		
+		
+		
+		if(exists == false) {
+			Document myDoc = new Document();
+			myDoc.append("_id", s.get_id())
+		     .append("location", s.getLocation());
+			collection.insertOne(myDoc);
+			
+			return false;
+		
+		}
+		else { 
+			System.out.println("_id already exists "); 
+			return true;
+		}
+		 
+
+	}
+
 	
 	
 }

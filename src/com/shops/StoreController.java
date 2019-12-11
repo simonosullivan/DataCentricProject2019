@@ -29,7 +29,6 @@ public class StoreController {
 		try {
 			this.dao = new DAO();
 		} catch (Exception e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		
@@ -66,7 +65,6 @@ public class StoreController {
 		try {
 			stores = this.dao.loadStores();
 		} catch (Exception e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 	}//loadStores
@@ -75,7 +73,6 @@ public class StoreController {
 		try {
 			products = this.dao.loadProducts();
 		} catch (Exception e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 	}//loadProducts
@@ -86,11 +83,23 @@ public class StoreController {
 		try {
 			dao.deleteProduct(p);
 		} catch (Exception e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 	}
 
+	// Innovation method    /////////////////////////////////////////////////////
+	public String addProduct(Product p) throws Exception {
+		// Get last store in Array list to get id 
+		Product lastProduct = this.products.get(products.size()-1);
+		int incPid = lastProduct.getPid() + 1;
+		// Increment id and add it to new store object 
+		p.setPid(incPid);
+		
+		dao.addProduct(p);
+		return "list_products";
+	
+	}
+	//////////////////////////////////////////////////////////////////////////////
 
 	public String addStore(Store s) {
 		System.out.println(s.getName()+" "+s.getFounded());
@@ -106,13 +115,13 @@ public class StoreController {
 			return "list_stores";
 		} catch(SQLIntegrityConstraintViolationException e) {
 			FacesMessage message = 
-					new FacesMessage("Error: Id already exists");  // Constraint on Name of store and founded
+					new FacesMessage("Error: Store "+s.getName()+" already exists");  // Constraint on Name of store and founded
 					FacesContext.getCurrentInstance().addMessage(null, message);
 
 		}
 		catch(CommunicationsException e) {
 			FacesMessage message = 
-					new FacesMessage("Error: Can't communicate with DB");
+					new FacesMessage("Error: Cannot connect to MySQL Database");
 					FacesContext.getCurrentInstance().addMessage(null, message);
 		}
 		catch(Exception e) {
@@ -133,7 +142,6 @@ public class StoreController {
 			try {
 				products = this.dao.loadProducts();
 			} catch (Exception e) {
-				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
 		}
@@ -160,8 +168,6 @@ public class StoreController {
 					FacesContext.getCurrentInstance().addMessage(null, message);
 		}
 		return null;
-		
-		
 	}
 
 	public void storesProducts(Store s) {
@@ -176,6 +182,44 @@ public class StoreController {
 	public void loadHeadOffices() {
 		System.out.println("in controller in LoadHeadOffices");
 		storeHOs = this.mongoDAO.loadHeadOffices();
+	}
+	
+	public String addHeadOffice(StoreHeadOffice s) {
+		boolean locationExists = false;
+		boolean idExists = false;
+		// get stores to check ids to see if Head office will be valid 
+		try {
+			stores = this.dao.loadStores();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		
+		for(int i=0; i<stores.size(); i++) {
+			if(s.get_id() == stores.get(i).getId()) {
+				// id exists , add office 
+				idExists = true;
+				locationExists = mongoDAO.addHeadOffice(s);
+			}
+			
+		}//for
+		
+		if(locationExists == true) {
+				FacesMessage message = 
+						new FacesMessage("Error: Store ID: "+s.get_id()+" already has a location");
+						FacesContext.getCurrentInstance().addMessage(null, message);
+		}
+		
+		if(idExists == true && locationExists == false) {
+			System.out.println("added head office");
+			return "list_offices";
+		}
+		else if(idExists == false){
+			FacesMessage message = 
+					new FacesMessage("Error: Store ID: "+s.get_id()+" does not exist");
+					FacesContext.getCurrentInstance().addMessage(null, message);
+		}
+		
+		return null;
 	}
 	
 	
